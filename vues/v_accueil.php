@@ -1,4 +1,7 @@
-<?php include("accueil_onglets.php");?>
+<?php include("accueil_onglets.php");
+header("Refresh:90");
+actualisation();
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -7,7 +10,7 @@
 		<link rel="stylesheet" href="public/css/footer.css">
 	</head>
 	<body>
-		<?php 
+		<?php
             include("vues/v_header_bouton.php");
             //Affichage d'un message d'erreur si un capteur ne fonctionne pas
             list($erreur_capteur,$erreur_salles,$a) = afficher_erreur_capteur();
@@ -17,7 +20,7 @@
         ?>
 		<nav>
             <a href="index.php?target=compte&action=connecte&reaction=home" class="Conso">Home</a>
-             <?php //Affichage des onglets                
+             <?php //Affichage des onglets
                 $onglets = afficher_onglets();
                 if ($onglets!=NULL)
                 foreach($onglets as $element){//On parcourt le tableau
@@ -38,10 +41,12 @@
             <a href="index.php?target=compte&action=connecte&reaction=profil" class="Conso">Profil</a>
         </nav>
 		<section>
+			<?php
+			?>
             <article>
                 <?php $bdd=connexion_bdd();?>
                 <div id="titre">Fonctions de la pièce <?php echo $_GET['reaction']; ?><a href="index.php?target=compte&action=connecte&reaction=routine&anticipation=<?php echo $_GET['reaction']; ?>" class="Routine">Routine</a></div> <br/>
-                <?php 
+                <?php
                     if (isset($_GET['anticipation'])){
                         if ($_GET['anticipation']=='fonction_supprimee'){
                             echo "<p class='message_suppression'>La fonction a bien été supprimée.</p><br>";
@@ -49,7 +54,7 @@
                     }
                 ?>
                 <div id="corps">
-                    <?php 
+                    <?php
                         $capteurs = afficher_fonctions();
                         if ($capteurs!=NULL){
                             foreach($capteurs as $element){//On parcourt le tableau
@@ -70,27 +75,37 @@
                                             'nom_salle' => $_GET['reaction']
                                             ));
                                        $donneesh = $reponseh->fetch();
+
                                         if ($donneesh['donnee_recue_capteur']==NULL){
                                             echo 'X';
                                         } else {
-                                            echo $donneesh['donnee_recue_capteur'];
                                             if ($element=='Humidité'){
-                                                echo "%";
+                                                echo $donneesh['donnee_recue_capteur']."%";
                                             } else if ($element=='Température'){
-                                                echo "°C";
+                                                echo $donneesh['donnee_recue_capteur']."°C";
                                             } else if ($element=='Eau'){
-                                                echo "L";
+                                                echo $donneesh['donnee_recue_capteur']."L";
                                             } else if ($element=='CO2'){
-                                                echo "ppm";
+                                                echo $donneesh['donnee_recue_capteur']."ppm";
                                             } else if ($element=='Electricité'){
-                                                echo "Whk";
-                                            }
+                                                echo $donneesh['donnee_recue_capteur']."Whk";
+                                            } else if($element=='Lumière'){
+																							if($element==0){
+																								echo "🌃";
+																							} elseif($element==1){
+																								echo "☁️";
+																							} else {
+																								echo "🌞";
+																							}
+																						} else {
+																							echo $donneesh['donnee_recue_capteur'];
+																						}
                                         }
                                         ?>
                                         </h3>
                                     </div>
                                     <div class = "BoiteVide">
-                                        <?php 
+                                        <?php
                                             if ($donneesh['etat_capteur'] =='2'){//Si le capteur ne marche pas
                                                 echo '<div class=\'erreur_capteur_boite\'><br>Cette fonction rencontre un dysfonctionnement.<br><a href="index.php?target=sav" class="lien_message_etat_capteur">Contactez le SAV</a></div>';
                                             } else if ($donneesh['donnee_envoyee_capteur']==NULL){
@@ -111,7 +126,7 @@
                                     <?php
                                     if ($donneesh['etat_capteur'] =='2'){
                                     } else if ($element=='Température'){
-                                        ?> 
+                                        ?>
                                         <form method="post" action="index.php?target=compte&action=connecte&reaction=nouvel_ordre&anticipation=<?php echo $_GET['reaction'] ?>&comprehension=<?php echo $element; ?>">
                                             <input type="range" name="ordre" min="15" max="30" onchange="updateTextInput2(this.value);">
                                             <input type="text" id="textInput2" size='2' value="">&nbsp;°C&nbsp;
@@ -164,7 +179,7 @@
                                 </div>
                                 <?php
                                 }
-                            }  
+                            }
                             ?>
                         <div class="petit_capteur"><h1 class="Titre">Ajouter une fonction</h1><a href="index.php?target=compte&action=connecte&reaction=nouvelle_fonction&anticipation=<?php echo $_GET['reaction']; ?>" class='plus'>+</a>
                         </div>
@@ -175,12 +190,12 @@
 		</section>
         <script>
             function updateTextInput(val) {
-                document.getElementById('textInput').value=val; 
+                document.getElementById('textInput').value=val;
             }
             function updateTextInput2(val) {
-                document.getElementById('textInput2').value=val; 
+                document.getElementById('textInput2').value=val;
             }
         </script>
-		<?php include("vues/v_footer.php"); ?>	
+		<?php include("vues/v_footer.php"); ?>
 	</body>
 </html>
