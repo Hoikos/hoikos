@@ -76,31 +76,33 @@ actualisation();
                                                 'nom_salle' => $_GET['reaction']
                                                 ));
                                            $donneesh = $reponseh->fetch();
-                                            if ($donneesh['donnee_recue_capteur']==NULL){
-																							echo 'X';
-	                                        } else {
-	                                            if ($element=='Humidité'){
-	                                                echo $donneesh['donnee_recue_capteur']."%";
-	                                            } else if ($element=='Température'){
-	                                                echo $donneesh['donnee_recue_capteur']."°C";
-	                                            } else if ($element=='Eau'){
-	                                                echo $donneesh['donnee_recue_capteur']."L";
-	                                            } else if ($element=='CO2'){
-	                                                echo $donneesh['donnee_recue_capteur']."ppm";
-	                                            } else if ($element=='Electricité'){
-	                                                echo $donneesh['donnee_recue_capteur']."Whk";
-																							}else if($element=='Lumière'){
-																								if($element==0){
-																									echo "🌃";
-																								} elseif($element==1){
-																									echo "☁️";
-																								} else {
-																									echo "🌞";
-																								}
-																							} else {
-																								echo $donneesh['donnee_recue_capteur'];
-																							}
-	                                        }
+																					 if ($donneesh['donnee_recue_capteur']==NULL){
+	                                             echo 'X';
+	                                         } else {
+	                                             if ($element=='Humidité'){
+	                                                 echo $donneesh['donnee_recue_capteur']."%";
+	                                             } else if ($element=='Température'){
+	                                                 echo $donneesh['donnee_recue_capteur']."°C";
+	                                             } else if ($element=='Eau'){
+	                                                 echo $donneesh['donnee_recue_capteur']."L";
+	                                             } else if ($element=='CO2'){
+	                                                 echo $donneesh['donnee_recue_capteur']."ppm";
+	                                             } else if ($element=='Electricité'){
+	                                                 echo $donneesh['donnee_recue_capteur']."Whk";
+	                                             } else if($element=='Lumière'){
+	 																							if($donneesh['donnee_recue_capteur']==0){
+	 																								echo "🌃";
+	 																							} elseif($donneesh['donnee_recue_capteur']==1){
+	 																								echo "☁️";
+	 																							} else {
+	 																								echo "🌞";
+	 																							}
+	 																						} else if($element=='Climatisation'){
+	 																							echo $donneesh['donnee_recue_capteur'];
+	 																						} else {
+
+	 																						}
+	                                         }
                                     ?>
                                             </h3>
                                         </div>
