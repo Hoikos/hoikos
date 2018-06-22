@@ -1,5 +1,5 @@
 <?php include("accueil_onglets.php");
-header("Refresh:90");
+header("Refresh:7");
 actualisation();
 ?>
 <!DOCTYPE html>
@@ -90,15 +90,17 @@ actualisation();
                                             } else if ($element=='Electricité'){
                                                 echo $donneesh['donnee_recue_capteur']."Whk";
                                             } else if($element=='Lumière'){
-																							if($element==0){
+																							if($donneesh['donnee_recue_capteur']==0){
 																								echo "🌃";
-																							} elseif($element==1){
+																							} elseif($donneesh['donnee_recue_capteur']==1){
 																								echo "☁️";
 																							} else {
 																								echo "🌞";
 																							}
-																						} else {
+																						} else if($element=='Climatisation'){
 																							echo $donneesh['donnee_recue_capteur'];
+																						} else {
+
 																						}
                                         }
                                         ?>
