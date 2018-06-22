@@ -102,73 +102,76 @@ function recupererTrame(){
 	curl_close($ch);
 
 		$data_tab = str_split($data,33);
-		$size = count($data_tab)-2;
-		$last = $data_tab[$size];
+		$size = count($data_tab)-5;
+		for($i = 0;$i<3;$i++){
+			$last = $data_tab[$size+$i];
+			$valeur = substr($last,9,4);
+			$capteur = substr($last, 6, 1);
 
-		$valeur = substr($last,9,4);
-		$capteur = substr($last, 7, 2);
 
-
-		switch ($capteur) {
-			case 15: //photorésitance
-				if($valeur == 0000){
-					$req = $bdd->prepare('UPDATE capteur SET donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
-					$req->execute(array(
-					'donnee_recue_capteur' => 0,
-						'ID_logement' => $_SESSION['ID_logement'],
-						'nom_capteur' => 'Lumière'
-						));
-				} else if($valeur == 0001){
-					$req = $bdd->prepare('UPDATE capteur SET donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
-					$req->execute(array(
-					'donnee_recue_capteur' => 1,
-						'ID_logement' => $_SESSION['ID_logement'],
-						'nom_capteur' => 'Lumière'
-						));
-				} else if($valeur == 0002){
-					$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
-					$req->execute(array(
-					'donnee_recue_capteur' => 2,
-						'ID_logement' => $_SESSION['ID_logement'],
-						'nom_capteur' => 'Lumière'
-						));
-				}
-				break;
-			case 13: //ventilateur
-				if($valeur == 0001){
-					$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
-					$req->execute(array(
-					'donnee_recue_capteur' => 'Allumer',
-						'ID_logement' => $_SESSION['ID_logement'],
-						'nom_capteur' => 'Climatisation'
-					));
-				} else {
-					$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
-					$req->execute(array(
-					'donnee_recue_capteur' => 'Éteint',
-						'ID_logement' => $_SESSION['ID_logement'],
-						'nom_capteur' => 'Climatisation'
-					));
-				}
-				break;
-			case 05:
-				if($valeur == 0001){
-					$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
-					$req->execute(array(
-					'donnee_recue_capteur' => 'Allumer',
-						'ID_logement' => $_SESSION['ID_logement'],
-						'nom_capteur' => 'Climatisation'
-					));
-				} else {
-					$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
-					$req->execute(array(
-					'donnee_recue_capteur' => 'Éteint',
-						'ID_logement' => $_SESSION['ID_logement'],
-						'nom_capteur' => 'Climatisation'
-					));
-				}
-				break;
+					switch ($capteur) {
+						case 'E': //photorésitance
+							if($valeur == 0000){
+								$req = $bdd->prepare('UPDATE capteur SET donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
+								$req->execute(array(
+								'donnee_recue_capteur' => 0,
+									'ID_logement' => $_SESSION['ID_logement'],
+									'nom_capteur' => 'Lumière'
+									));
+							} else if($valeur == 0001){
+								$req = $bdd->prepare('UPDATE capteur SET donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
+								$req->execute(array(
+								'donnee_recue_capteur' => 1,
+									'ID_logement' => $_SESSION['ID_logement'],
+									'nom_capteur' => 'Lumière'
+									));
+							} else if($valeur == 0002){
+								$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
+								$req->execute(array(
+								'donnee_recue_capteur' => 2,
+									'ID_logement' => $_SESSION['ID_logement'],
+									'nom_capteur' => 'Lumière'
+									));
+							}
+							break;
+						case 'C': //ventilateur
+							if($valeur == 0001){
+								$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
+								$req->execute(array(
+								'donnee_recue_capteur' => 'Allumée',
+									'ID_logement' => $_SESSION['ID_logement'],
+									'nom_capteur' => 'Climatisation'
+								));
+							} else {
+								$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
+								$req->execute(array(
+								'donnee_recue_capteur' => 'Éteinte',
+									'ID_logement' => $_SESSION['ID_logement'],
+									'nom_capteur' => 'Climatisation'
+								));
+							}
+							break;
+						case 5:/*
+							if($valeur == 0001){
+								$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
+								$req->execute(array(
+								'donnee_recue_capteur' => 'Allumée',
+									'ID_logement' => $_SESSION['ID_logement'],
+									'nom_capteur' => 'Climatisation'
+								));
+							} else {
+								$req = $bdd->prepare('UPDATE capteur SET  donnee_recue_capteur = :donnee_recue_capteur WHERE ID_logement=:ID_logement AND nom_capteur=:nom_capteur ');
+								$req->execute(array(
+								'donnee_recue_capteur' => 'Éteinte',
+									'ID_logement' => $_SESSION['ID_logement'],
+									'nom_capteur' => 'Climatisation'
+								));
+							}*/
+							break;
+					}
 		}
+
+
 }
 
 function ajout_ordre(){
@@ -209,7 +212,7 @@ function ajout_ordre(){
 	}
 
 	if((int)$donneesc['ID_type_de_capteur']==13 && $_POST['ordre'] == 'ON'){ //Trame pour allumer la clim
-		$url ='http://projets-tomcat.isep.fr:8080/appService?ACTION=COMMAND&TEAM=004C&TRAME=1004C2113000113009020180611000000';
+		$url ='http://projets-tomcat.isep.fr:8080/appService?ACTION=COMMAND&TEAM=004C&TRAME=1004C1C01000111009020180611000000';
 
 		// Création d'une ressource CURL
 				$ch = curl_init();
@@ -224,7 +227,7 @@ function ajout_ordre(){
 				$content = curl_exec($ch);
 		curl_close(@$ch);
 	}elseif((int)$donneesc['ID_type_de_capteur']==13 && $_POST['ordre'] == 'OFF'){ //Trame pour éteindre la clim
-		$url ='http://projets-tomcat.isep.fr:8080/appService?ACTION=COMMAND&TEAM=004C&TRAME=1004C2113000013009020180611000000';
+		$url ='http://projets-tomcat.isep.fr:8080/appService?ACTION=COMMAND&TEAM=004C&TRAME=1004C1C01000011001020180611000000';
 
 		// Création d'une ressource CURL
 				$ch = curl_init();
@@ -241,7 +244,7 @@ function ajout_ordre(){
 	}elseif((int)$donneesc['ID_type_de_capteur']==1){ // présence
 
 	}elseif((int)$donneesc['ID_type_de_capteur']==5 &&  $_POST['ordre'] == 'Allumer'){ //Trame pour allumer la lumière/LED
-			$url ='http://projets-tomcat.isep.fr:8080/appService?ACTION=COMMAND&TEAM=004C&TRAME=1004C21050001050709019970611000000';
+			$url ='http://projets-tomcat.isep.fr:8080/appService?ACTION=COMMAND&TEAM=004C&TRAME=1004C15010001010109019970611000000';
 
 			// Création d'une ressource CURL
 					$ch = curl_init();
@@ -256,7 +259,7 @@ function ajout_ordre(){
 					$content = curl_exec($ch);
 			curl_close(@$ch);
 	} elseif((int)$donneesc['ID_type_de_capteur']==5 &&  $_POST['ordre'] == 'Eteindre') { //Trame pour éteindre la lumière/LED
-		$url ='http://projets-tomcat.isep.fr:8080/appService?ACTION=COMMAND&TEAM=004C&TRAME=1004C21050000050709019970611000000';
+		$url ='http://projets-tomcat.isep.fr:8080/appService?ACTION=COMMAND&TEAM=004C&TRAME=1004C15010000010101019970611000000';
 
 		// Création d'une ressource CURL
 				$ch = curl_init();
